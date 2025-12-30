@@ -2,7 +2,32 @@ package main
 
 import (
 	"database/sql"
+
+	_ "modernc.org/sqlite"
 )
+
+func openDB() (*sql.DB, error) {
+	db, err := sql.Open("sqlite", "tracker.db")
+	if err != nil {
+		return nil, err
+	}
+
+	_, err = db.Exec(`
+CREATE TABLE IF NOT EXISTS parcel (
+    number     INTEGER PRIMARY KEY AUTOINCREMENT,
+    client     INTEGER NOT NULL,
+    address    TEXT,
+    status     TEXT,
+    created_at TEXT
+);
+`)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return db, nil
+}
 
 type ParcelStore struct {
 	db *sql.DB
