@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"time"
 
@@ -97,7 +96,8 @@ func (s ParcelService) Delete(number int) error {
 }
 
 func main() {
-	db, err := sql.Open("sqlite", "tracker.db")
+	db, err := openDB()
+
 	if err != nil {
 		fmt.Println(err)
 		return
